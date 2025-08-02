@@ -1,0 +1,1876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShriTech Travel - Explore Beautiful Destinations</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        :root {
+            --primary-color: #1a5276;
+            --secondary-color: #f39c12;
+            --accent-color: #e74c3c;
+            --light-color: #f5f5f5;
+            --dark-color: #333;
+            --text-color: #555;
+            --white: #fff;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--light-color);
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--primary-color);
+            transition: var(--transition);
+        }
+
+        a:hover {
+            color: var(--secondary-color);
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        .btn:hover {
+            background-color: var(--secondary-color);
+            color: var(--white);
+            transform: translateY(-3px);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-size: 36px;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            width: 70px;
+            height: 3px;
+            background-color: var(--secondary-color);
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .section-title p {
+            font-size: 18px;
+            color: var(--text-color);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        header {
+            background-color: var(--white);
+            box-shadow: var(--shadow);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            padding: 15px 0;
+            transition: var(--transition);
+        }
+
+        header.scrolled {
+            padding: 10px 0;
+            background-color: rgba(255, 255, 255, 0.95);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .logo h1 {
+            font-size: 24px;
+            color: var(--primary-color);
+        }
+
+        .logo span {
+            color: var(--secondary-color);
+        }
+
+        .nav-links {
+            display: flex;
+        }
+
+        .nav-links li {
+            margin-left: 30px;
+        }
+
+        .nav-links a {
+            font-weight: 600;
+            color: var(--dark-color);
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background-color: var(--secondary-color);
+            bottom: -5px;
+            left: 0;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--primary-color);
+        }
+
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: var(--white);
+            padding-top: 80px;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-content h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero-content p {
+            font-size: 20px;
+            margin-bottom: 30px;
+        }
+
+        .hero-btns {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .hero-btns .btn {
+            margin: 0 10px;
+        }
+
+        .why-choose-us {
+            padding: 100px 0;
+            background-color: var(--white);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 30px 20px;
+            border-radius: 10px;
+            background-color: var(--light-color);
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow);
+        }
+
+        .feature-icon {
+            font-size: 40px;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 22px;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .about {
+            padding: 100px 0;
+            background-color: var(--light-color);
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 50px;
+            align-items: center;
+        }
+
+        .about-text h2 {
+            font-size: 36px;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .about-text p {
+            margin-bottom: 20px;
+        }
+
+        .services {
+            padding: 100px 0;
+            background-color: var(--white);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background-color: var(--light-color);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .service-img {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .service-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .service-card:hover .service-img img {
+            transform: scale(1.1);
+        }
+
+        .service-content {
+            padding: 25px;
+        }
+
+        .service-content h3 {
+            font-size: 22px;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .service-content p {
+            margin-bottom: 20px;
+        }
+
+        .destinations {
+            padding: 100px 0;
+            background-color: var(--light-color);
+        }
+
+        .destinations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .destination-card {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .destination-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .destination-img {
+            height: 250px;
+            overflow: hidden;
+        }
+
+        .destination-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .destination-card:hover .destination-img img {
+            transform: scale(1.1);
+        }
+
+        .destination-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+            padding: 20px;
+            color: var(--white);
+        }
+
+        .destination-content h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        .destination-content p {
+            display: flex;
+            align-items: center;
+        }
+
+        .destination-content p i {
+            margin-right: 5px;
+            color: var(--secondary-color);
+        }
+
+        .cta {
+            padding: 100px 0;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1500964757637-cf85e7e1f579?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            color: var(--white);
+            text-align: center;
+        }
+
+        .cta h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .cta p {
+            font-size: 20px;
+            margin-bottom: 30px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        footer {
+            background-color: var(--dark-color);
+            color: var(--white);
+            padding: 80px 0 20px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .footer-col h3 {
+            font-size: 22px;
+            margin-bottom: 25px;
+            position: relative;
+            color: var(--white);
+        }
+
+        .footer-col h3::after {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 2px;
+            background-color: var(--secondary-color);
+            bottom: -10px;
+            left: 0;
+        }
+
+        .footer-col p {
+            margin-bottom: 20px;
+        }
+
+        .footer-links li {
+            margin-bottom: 15px;
+        }
+
+        .footer-links a {
+            color: #bbb;
+            transition: var(--transition);
+            display: inline-block;
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary-color);
+            transform: translateX(5px);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: var(--white);
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-5px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .quick-contact {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 15px 0;
+        }
+
+        .quick-contact .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .quick-contact a {
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quick-contact a:hover {
+            color: var(--secondary-color);
+        }
+
+        .whatsapp-btn {
+            background-color: #25D366;
+            padding: 8px 15px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .whatsapp-btn:hover {
+            background-color: #128C7E;
+            color: var(--white);
+        }
+
+        /* Styles for the Booking Form Popup */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 30px;
+            border: 1px solid #888;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        .close-button {
+            color: #aaa;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-content h3 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .modal-content form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .modal-content form input[type="text"],
+        .modal-content form input[type="email"],
+        .modal-content form input[type="tel"],
+        .modal-content form select,
+        .modal-content form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .modal-content form textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .contact-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .contact-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            border-radius: 5px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            gap: 8px;
+        }
+
+        .contact-btn i {
+            font-size: 18px;
+        }
+
+        .whatsapp-option {
+            background-color: #25D366;
+        }
+
+        .whatsapp-option:hover {
+            background-color: #128C7E;
+        }
+
+        .email-option {
+            background-color: #D44638;
+        }
+
+        .email-option:hover {
+            background-color: #B33A2E;
+        }
+
+        .sms-option {
+            background-color: #5BC0DE;
+        }
+
+        .sms-option:hover {
+            background-color: #46B8DA;
+        }
+
+        .copy-option {
+            background-color: var(--primary-color);
+        }
+
+        .copy-option:hover {
+            background-color: #154360;
+        }
+
+        .form-data-review {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        .form-data-review p {
+            margin-bottom: 8px;
+        }
+
+        .form-data-review strong {
+            color: var(--primary-color);
+        }
+
+        /* Reviews Section Styles */
+        .reviews {
+            padding: 100px 0;
+            background-color: var(--white);
+        }
+
+        .reviews-container {
+            overflow: hidden;
+            position: relative;
+        }
+
+        .reviews-grid {
+            display: flex;
+            gap: 30px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            padding-bottom: 20px;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .reviews-grid::-webkit-scrollbar {
+            display: none;
+        }
+
+        .review-card {
+            flex: 0 0 calc(33.333% - 20px);
+            scroll-snap-align: start;
+            background-color: var(--light-color);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+            min-width: 300px;
+        }
+
+        .review-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .review-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .review-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        .review-user h4 {
+            font-size: 18px;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .review-rating {
+            color: var(--secondary-color);
+            margin-bottom: 5px;
+        }
+
+        .review-date {
+            font-size: 14px;
+            color: #777;
+        }
+
+        .review-content {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        /* Review Form Styles */
+        .review-form-container {
+            max-width: 600px;
+            margin: 50px auto 0;
+            background-color: var(--light-color);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+        }
+
+        .review-form h3 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .rating-stars {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .rating-stars input[type="radio"] {
+            display: none;
+        }
+
+        .rating-stars label {
+            font-size: 24px;
+            color: #ddd;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .rating-stars label:hover,
+        .rating-stars input[type="radio"]:checked ~ label {
+            color: var(--secondary-color);
+        }
+
+        /* Login Modal Styles */
+        .login-modal {
+            display: none;
+            position: fixed;
+            z-index: 1002;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-content {
+            background-color: #fefefe;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        .login-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #aaa;
+        }
+
+        .login-close:hover {
+            color: var(--dark-color);
+        }
+
+        .login-form h3 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .login-form .form-group {
+            margin-bottom: 20px;
+        }
+
+        .login-form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .login-form input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .login-form button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .login-form button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .login-footer a {
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        @media (max-width: 992px) {
+            .hero-content h1 {
+                font-size: 42px;
+            }
+            
+            .section-title h2 {
+                font-size: 32px;
+            }
+
+            .review-card {
+                flex: 0 0 calc(50% - 15px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 80px);
+                background-color: var(--white);
+                flex-direction: column;
+                align-items: center;
+                padding-top: 50px;
+                transition: var(--transition);
+            }
+
+            .nav-links.active {
+                left: 0;
+            }
+
+            .nav-links li {
+                margin: 15px 0;
+            }
+
+            .hero-content h1 {
+                font-size: 36px;
+            }
+
+            .hero-content p {
+                font-size: 18px;
+            }
+
+            .hero-btns {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+
+            .about-img {
+                order: -1;
+            }
+
+            .quick-contact .container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .contact-options {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-content h1 {
+                font-size: 30px;
+            }
+
+            .section-title h2 {
+                font-size: 28px;
+            }
+
+            .modal-content {
+                width: 95%;
+                padding: 20px 15px;
+            }
+
+            .review-card {
+                flex: 0 0 100%;
+                padding: 20px;
+            }
+
+            .review-avatar {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header id="header">
+        <div class="container header-container">
+            <div class="logo">
+                <img src="images/1.png" alt="ShriTech Travel Logo">
+                <h1>ShriTech <span>Travel</span></h1>
+            </div>
+            <nav>
+                <div class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#destinations">Destinations</a></li>
+                    <li><a href="#reviews">Reviews</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Explore Beautiful Destinations with ShriTech Travel</h1>
+                <p>Your trusted partner for unforgettable trips</p>
+                <div class="hero-btns">
+                    <a href="#services" class="btn">Plan Your Trip</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="quick-contact">
+        <div class="container">
+            <a href="tel:7039082427"><i class="fas fa-phone"></i> 7039082427</a>
+            <a href="mailto:shritechindia87@gmail.com"><i class="fas fa-envelope"></i> shritechindia87@gmail.com</a>
+            <a href="https://wa.me/917039082427" class="whatsapp-btn"><i class="fab fa-whatsapp"></i> WhatsApp Us</a>
+        </div>
+    </section>
+
+    <section class="destinations" id="destinations">
+        <div class="container">
+            <div class="section-title">
+                <h2>Popular Destinations</h2>
+                <p>Explore our most popular travel destinations</p>
+            </div>
+            
+            <div class="destinations-grid">
+                <div class="destination-card">
+                    <div class="destination-img">
+                        <img src="images/2.jpg" alt="Lonavala & Khandala">
+                    </div>
+                    <div class="destination-content">
+                        <h3>Lonavala & Khandala</h3>
+                        <p><i class="fas fa-map-marker-alt"></i> Maharashtra</p>
+                    </div>
+                </div>
+                
+                <div class="destination-card">
+                    <div class="destination-img">
+                        <img src="images/3.jpg" alt="Matheran">
+                    </div>
+                    <div class="destination-content">
+                        <h3>Matheran</h3>
+                        <p><i class="fas fa-map-marker-alt"></i> Maharashtra</p>
+                    </div>
+                </div>
+                
+                <div class="destination-card">
+                    <div class="destination-img">
+                        <img src="images/4.jpg" alt="Mahabaleshwar & Panchgani">
+                    </div>
+                    <div class="destination-content">
+                        <h3>Mahabaleshwar & Panchgani</h3>
+                        <p><i class="fas fa-map-marker-alt"></i> Maharashtra</p>
+                    </div>
+                </div>
+                
+                <div class="destination-card">
+                    <div class="destination-img">
+                        <img src="images/5.jpg" alt="Alibaug & Kashid">
+                    </div>
+                    <div class="destination-content">
+                        <h3>Alibaug & Kashid</h3>
+                        <p><i class="fas fa-map-marker-alt"></i> Maharashtra</p>
+                    </div>
+                </div>
+                
+                <div class="destination-card">
+                    <div class="destination-img">
+                        <img src="images/6.webp" alt="Igatpuri">
+                    </div>
+                    <div class="destination-content">
+                        <h3>Igatpuri</h3>
+                        <p><i class="fas fa-map-marker-alt"></i> Maharashtra</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="why-choose-us">
+        <div class="container">
+            <div class="section-title">
+                <h2>Why Choose Us</h2>
+                <p>We provide exceptional services to make your travel experience memorable</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3>Trusted Travel Partner</h3>
+                    <p>With years of experience, we've built a reputation for reliability and trustworthiness.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-suitcase"></i>
+                    </div>
+                    <h3>Tailor-made Packages</h3>
+                    <p>Customized itineraries designed specifically for your preferences and budget.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h3>24x7 Support</h3>
+                    <p>Round-the-clock assistance to ensure a smooth and hassle-free journey.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-rupee-sign"></i>
+                    </div>
+                    <h3>Affordable Rates</h3>
+                    <p>Quality services at competitive prices to suit every budget.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about" id="about">
+        <div class="container">
+            <div class="section-title">
+                <h2>About ShriTech Travel</h2>
+                <p>Learn more about our travel agency and what we offer</p>
+            </div>
+            
+            <div class="about-content">
+                <div class="about-text">
+                    <p>Welcome to ShriTech Travel, your gateway to exploring the incredible beauty of Maharashtra and beyond! Based in Kalyan, we are passionate about crafting unique and unforgettable travel experiences. We understand that every journey is personal, which makes us special because we specialize in creating customized travel packages tailored to your specific desires, whether you're seeking a serene escape, a thrilling adventure, or a perfect family holiday.</p>
+                    <p>From the misty hills of Lonavala and Khandala, the serene charm of Matheran, to the breathtaking landscapes of Mahabaleshwar & Panchgani, and the coastal tranquility of Alibaug & Kashid – we've got Maharashtra covered. But our horizons extend further; we also design personalized tours across diverse Indian destinations like Goa, Kerala, Himachal, and Uttarakhand, ensuring you discover the true essence of each place.</p>
+                    <p>At ShriTech Travel, we believe that travel should be seamless and stress-free. Our dedicated team of travel experts takes care of every detail, from meticulously planning your itinerary to arranging comfortable transport and providing round-the-clock support. We pride ourselves on offering reliable, affordable, and personalized services that guarantee a smile on your face and cherished memories that last a lifetime. Let us turn your travel dreams into a beautiful reality!</p>
+                    <p>Our Promise: Safe, affordable, and personalized travel services with a smile!</p>
+                    <a href="#contact" class="btn">Contact Us</a>
+                </div>
+                
+                <div class="about-img">
+                    <img src="images/11.jpg" alt="About ShriTech Travel">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="services" id="services">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Services & Packages</h2>
+                <p>We offer a wide range of travel services to suit your needs</p>
+            </div>
+            
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-img">
+                        <img src="images/6.webp" alt="Weekend Getaways">
+                    </div>
+                    <div class="service-content">
+                        <h3>Weekend Getaways</h3>
+                        <p>Perfect short trips to Lonavala, Khandala, Matheran, Igatpuri and other beautiful destinations near Mumbai.</p>
+                        <a href="#" class="btn book-now-btn">Book Now</a>
+                    </div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-img">
+                        <img src="images/7.jpg" alt="Family Trips">
+                    </div>
+                    <div class="service-content">
+                        <h3>Family Trips</h3>
+                        <p>Memorable family vacations to Mahabaleshwar, Panchgani, Alibaug and other family-friendly destinations.</p>
+                        <a href="#" class="btn book-now-btn">Book Now</a>
+                    </div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-img">
+                        <img src="images/8.jpg" alt="Custom Tours">
+                    </div>
+                    <div class="service-content">
+                        <h3>Custom Tours</h3>
+                        <p>Personalized tours across India including Goa, Kerala, Himachal, Uttarakhand and more.</p>
+                        <a href="#" class="btn book-now-btn">Book Now</a>
+                    </div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-img">
+                        <img src="images/9.jpg" alt="Corporate & Group Bookings">
+                    </div>
+                    <div class="service-content">
+                        <h3>Corporate & Group Bookings</h3>
+                        <p>Special arrangements for corporate outings, team building trips, and large group travels.</p>
+                        <a href="#" class="btn book-now-btn">Book Now</a>
+                    </div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-img">
+                        <img src="images/10.jpg" alt="Transport Arrangements">
+                    </div>
+                    <div class="service-content">
+                        <h3>Transport Arrangements</h3>
+                        <p>Comfortable and reliable transportation options for all your travel needs.</p>
+                        <a href="#" class="btn book-now-btn">Book Now</a>
+                    </div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-img">
+                        <img src="images/7.webp" alt="Adventure Packages">
+                    </div>
+                    <div class="service-content">
+                        <h3>Adventure Packages</h3>
+                        <p>Thrilling adventure trips including trekking, rafting, and wildlife safaris.</p>
+                        <a href="#" class="btn book-now-btn">Book Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="reviews" id="reviews">
+        <div class="container">
+            <div class="section-title">
+                <h2>Customer Reviews</h2>
+                <p>What our customers say about their experiences with us</p>
+            </div>
+            
+            <div class="reviews-container">
+                <div class="reviews-grid" id="reviewsContainer">
+                    <!-- Reviews will be loaded here dynamically -->
+                </div>
+            </div>
+            
+            <div class="review-form-container">
+                <div class="review-form">
+                    <h3>Share Your Experience</h3>
+                    <button id="loginToReviewBtn" class="btn" style="width: 100%;">Login to Submit Review</button>
+                    <form id="reviewForm" style="display: none;">
+                        <div class="form-group">
+                            <label for="reviewName">Your Name:</label>
+                            <input type="text" id="reviewName" name="name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Your Rating:</label>
+                            <div class="rating-stars">
+                                <input type="radio" id="star5" name="rating" value="5">
+                                <label for="star5"><i class="fas fa-star"></i></label>
+                                <input type="radio" id="star4" name="rating" value="4">
+                                <label for="star4"><i class="fas fa-star"></i></label>
+                                <input type="radio" id="star3" name="rating" value="3">
+                                <label for="star3"><i class="fas fa-star"></i></label>
+                                <input type="radio" id="star2" name="rating" value="2">
+                                <label for="star2"><i class="fas fa-star"></i></label>
+                                <input type="radio" id="star1" name="rating" value="1">
+                                <label for="star1"><i class="fas fa-star"></i></label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="reviewDestination">Destination Visited:</label>
+                            <input type="text" id="reviewDestination" name="destination" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="reviewText">Your Review:</label>
+                            <textarea id="reviewText" name="review" required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn">Submit Review</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta">
+        <div class="container">
+            <h2>Ready for Your Next Adventure?</h2>
+            <p>Contact us today to plan your perfect getaway. Let us handle all the details while you focus on creating wonderful memories.</p>
+            <a href="#contact" class="btn">Get Started</a>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-col">
+                    <h3>About ShriTech Travel</h3>
+                    <p>Your trusted travel partner based in Kalyan, offering customized travel packages across Maharashtra and India. We specialize in making your travel experiences memorable and stress-free.</p>
+                    <div class="social-links">
+                        <a href="https://www.instagram.com/shritechindia87/" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.facebook.com/people/Shritech-travel/61577566702161/?sk=reels_tab" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://wa.me/917039082427" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#destinations">Destinations</a></li>
+                        <li><a href="#reviews">Reviews</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Our Services</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Weekend Getaways</a></li>
+                        <li><a href="#">Family Trips</a></li>
+                        <li><a href="#">Custom Tours</a></li>
+                        <li><a href="#">Corporate Travel</a></li>
+                        <li><a href="#">Transport</a></li>
+                        <li><a href="#">Adventure Packages</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Contact Us</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> Kalyan, Maharashtra, India</p>
+                    <p><i class="fas fa-phone"></i> 7039082427</p>
+                    <p><i class="fas fa-envelope"></i> shritechindia87@gmail.com</p>
+                    <a href="https://wa.me/917039082427" class="whatsapp-btn" style="margin-top: 15px; display: inline-flex;"><i class="fab fa-whatsapp"></i> WhatsApp Us</a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 ShriTech Travel. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Booking Modal -->
+    <div id="bookingModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <div id="bookingFormContainer">
+                <h3>Book Your Trip</h3>
+                <form id="bookingForm">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required>
+
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+
+                    <label for="phone">Phone Number:</label>
+                    <input type="tel" id="phone" name="phone" required>
+
+                    <label for="preferred_service_type">Preferred Service Type:</label>
+                    <select id="preferred_service_type" name="preferred_service_type" required>
+                        <option value="">--Select Service Type--</option>
+                        <option value="Weekend Getaways">Weekend Getaways</option>
+                        <option value="Family Trips">Family Trips</option>
+                        <option value="Custom Tours">Custom Tours</option>
+                        <option value="Corporate & Group Bookings">Corporate & Group Bookings</option>
+                        <option value="Transport Arrangements">Transport Arrangements</option>
+                        <option value="Adventure Packages">Adventure Packages</option>
+                        <option value="Other">Other</option>
+                    </select>
+
+                    <label for="place_to_travel">Place to Travel:</label>
+                    <input type="text" id="place_to_travel" name="place_to_travel" placeholder="E.g., Goa, Manali, Lonavala" required>
+
+                    <label for="message">Your Message/Requirements:</label>
+                    <textarea id="message" name="message" rows="4"></textarea>
+
+                    <button type="submit">Proceed to Contact Options</button>
+                </form>
+            </div>
+            
+            <div id="contactOptionsContainer" style="display: none;">
+                <h3>Choose How to Contact Us</h3>
+                <div class="form-data-review">
+                    <p><strong>Name:</strong> <span id="review-name"></span></p>
+                    <p><strong>Phone:</strong> <span id="review-phone"></span></p>
+                    <p><strong>Service:</strong> <span id="review-service"></span></p>
+                    <p><strong>Destination:</strong> <span id="review-destination"></span></p>
+                    <p><strong>Message:</strong> <span id="review-message"></span></p>
+                </div>
+                <div class="contact-options">
+                    <a id="whatsappBtn" class="contact-btn whatsapp-option" target="_blank">
+                        <i class="fab fa-whatsapp"></i> Send via WhatsApp
+                    </a>
+                    <a id="emailBtn" class="contact-btn email-option" target="_blank">
+                        <i class="fas fa-envelope"></i> Send via Email
+                    </a>
+                    <a id="smsBtn" class="contact-btn sms-option" target="_blank">
+                        <i class="fas fa-sms"></i> Send via SMS
+                    </a>
+                    <button id="copyBtn" class="contact-btn copy-option">
+                        <i class="fas fa-copy"></i> Copy Details
+                    </button>
+                </div>
+                <button id="backToFormBtn" class="btn btn-outline" style="width: 100%; margin-top: 15px;">
+                    <i class="fas fa-arrow-left"></i> Back to Form
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="login-modal">
+        <div class="login-content">
+            <span class="login-close">&times;</span>
+            <div class="login-form">
+                <h3>Login to Submit Review</h3>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">Email:</label>
+                        <input type="email" id="loginEmail" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password:</label>
+                        <input type="password" id="loginPassword" name="password" required>
+                    </div>
+                    <button type="submit">Login</button>
+                </form>
+                <div class="login-footer">
+                    <p>Don't have an account? <a href="#" id="registerLink">Register</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            mobileMenuBtn.innerHTML = navLinks.classList.contains('active') ? 
+                '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+        });
+        
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+        });
+        
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('header');
+            header.classList.toggle('scrolled', window.scrollY > 50);
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Booking modal functionality
+        const bookingModal = document.getElementById('bookingModal');
+        const closeButton = document.querySelector('.close-button');
+        const bookNowBtns = document.querySelectorAll('.book-now-btn');
+        const bookingForm = document.getElementById('bookingForm');
+        const bookingFormContainer = document.getElementById('bookingFormContainer');
+        const contactOptionsContainer = document.getElementById('contactOptionsContainer');
+        const backToFormBtn = document.getElementById('backToFormBtn');
+        
+        // Form review elements
+        const reviewName = document.getElementById('review-name');
+        const reviewPhone = document.getElementById('review-phone');
+        const reviewService = document.getElementById('review-service');
+        const reviewDestination = document.getElementById('review-destination');
+        const reviewMessage = document.getElementById('review-message');
+        
+        // Contact option buttons
+        const whatsappBtn = document.getElementById('whatsappBtn');
+        const emailBtn = document.getElementById('emailBtn');
+        const smsBtn = document.getElementById('smsBtn');
+        const copyBtn = document.getElementById('copyBtn');
+        
+        // Open the modal when any "Book Now" button is clicked
+        bookNowBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                bookingModal.style.display = 'flex';
+                // Reset form and show form container
+                bookingForm.reset();
+                bookingFormContainer.style.display = 'block';
+                contactOptionsContainer.style.display = 'none';
+            });
+        });
+
+        // Close the modal when the close button is clicked
+        closeButton.addEventListener('click', () => {
+            bookingModal.style.display = 'none';
+        });
+
+        // Close the modal when clicking outside the modal content
+        window.addEventListener('click', (event) => {
+            if (event.target == bookingModal) {
+                bookingModal.style.display = 'none';
+            }
+        });
+
+        // Handle form submission
+        bookingForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(bookingForm);
+            const data = {};
+            for (let [key, value] of formData.entries()) {
+                data[key] = value;
+            }
+            
+            // Update review section
+            reviewName.textContent = data.name;
+            reviewPhone.textContent = data.phone;
+            reviewService.textContent = data.preferred_service_type;
+            reviewDestination.textContent = data.place_to_travel;
+            reviewMessage.textContent = data.message || 'No additional message';
+            
+            // Prepare message for sharing
+            const message = `Booking Inquiry from ShriTech Travel Website:
+Name: ${data.name}
+Phone: ${data.phone}
+Email: ${data.email}
+Service Type: ${data.preferred_service_type}
+Destination: ${data.place_to_travel}
+Message: ${data.message || 'No additional message'}`;
+            
+            // Set up contact options
+            whatsappBtn.href = `https://wa.me/917039082427?text=${encodeURIComponent(message)}`;
+            emailBtn.href = `mailto:shritechindia87@gmail.com?subject=Travel Inquiry from ${encodeURIComponent(data.name)}&body=${encodeURIComponent(message)}`;
+            smsBtn.href = `sms:7039082427?body=${encodeURIComponent(message)}`;
+            
+            // Set up copy button
+            copyBtn.onclick = () => {
+                navigator.clipboard.writeText(message).then(() => {
+                    alert('Details copied to clipboard! You can now paste them anywhere.');
+                }).catch(err => {
+                    console.error('Failed to copy: ', err);
+                    // Fallback for older browsers
+                    const textarea = document.createElement('textarea');
+                    textarea.value = message;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                    alert('Details copied to clipboard!');
+                });
+            };
+            
+            // Show contact options
+            bookingFormContainer.style.display = 'none';
+            contactOptionsContainer.style.display = 'block';
+        });
+
+        // Back to form button
+        backToFormBtn.addEventListener('click', () => {
+            bookingFormContainer.style.display = 'block';
+            contactOptionsContainer.style.display = 'none';
+        });
+
+        // Reviews functionality with JSON storage and login
+        const reviewsContainer = document.getElementById('reviewsContainer');
+        const reviewForm = document.getElementById('reviewForm');
+        const loginToReviewBtn = document.getElementById('loginToReviewBtn');
+        const loginModal = document.getElementById('loginModal');
+        const loginClose = document.querySelector('.login-close');
+        const loginForm = document.getElementById('loginForm');
+        const registerLink = document.getElementById('registerLink');
+
+        // Sample users data (in a real app, this would come from a server)
+        let users = [
+            { email: "user@example.com", password: "password123", name: "Demo User" }
+        ];
+
+        // Current user
+        let currentUser = null;
+
+        // Reviews data (will be loaded from JSON file)
+        let reviews = [];
+
+        // Function to save reviews to JSON file (simulated)
+        function saveReviewsToJSON() {
+            // In a real application, you would send this to a server
+            // For this demo, we'll simulate saving to a JSON file
+            const data = JSON.stringify(reviews);
+            localStorage.setItem('shritechTravelReviews', data);
+            
+            // In a real app, you would use something like:
+            // fetch('save_reviews.php', {
+            //     method: 'POST',
+            //     headers: { 'Content-Type': 'application/json' },
+            //     body: data
+            // });
+            
+            console.log("Reviews saved (simulated JSON file)");
+        }
+
+        // Function to load reviews from JSON file (simulated)
+        function loadReviewsFromJSON() {
+            // In a real application, you would fetch this from a server
+            // For this demo, we'll use localStorage to simulate loading from a file
+            
+            // Check if there are reviews in localStorage
+            const savedReviews = localStorage.getItem('shritechTravelReviews');
+            if (savedReviews) {
+                reviews = JSON.parse(savedReviews);
+            } else {
+                // Default reviews if none exist
+                reviews = [
+                    {
+                        id: 1,
+                        name: "Rahul Sharma",
+                        rating: 5,
+                        destination: "Lonavala & Khandala",
+                        review: "Amazing weekend getaway organized by ShriTech Travel. Everything was perfectly arranged and the guide was very knowledgeable. Will definitely book with them again!",
+                        date: "2025-05-15"
+                    },
+                    {
+                        id: 2,
+                        name: "Priya Patel",
+                        rating: 4,
+                        destination: "Mahabaleshwar",
+                        review: "Great family trip with comfortable transport and good hotels. The itinerary was well-planned with enough free time to explore on our own.",
+                        date: "2025-04-22"
+                    },
+                    {
+                        id: 3,
+                        name: "Vikram Singh",
+                        rating: 5,
+                        destination: "Alibaug",
+                        review: "Excellent service from start to finish. The team was very responsive to all our requests and made sure we had a memorable beach vacation.",
+                        date: "2025-03-10"
+                    }
+                ];
+                saveReviewsToJSON();
+            }
+            
+            displayReviews();
+        }
+
+        // Function to display reviews with horizontal scrolling
+        function displayReviews() {
+            reviewsContainer.innerHTML = '';
+            
+            // Sort reviews by date (newest first)
+            reviews.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            reviews.forEach(review => {
+                const reviewCard = document.createElement('div');
+                reviewCard.className = 'review-card';
+                
+                // Create initials for avatar
+                const initials = review.name.split(' ').map(n => n[0]).join('').toUpperCase();
+                
+                // Create stars based on rating
+                let stars = '';
+                for (let i = 1; i <= 5; i++) {
+                    stars += i <= review.rating ? 
+                        '<i class="fas fa-star"></i>' : 
+                        '<i class="far fa-star"></i>';
+                }
+                
+                reviewCard.innerHTML = `
+                    <div class="review-header">
+                        <div class="review-avatar">${initials}</div>
+                        <div class="review-user">
+                            <h4>${review.name}</h4>
+                            <div class="review-rating">${stars}</div>
+                            <div class="review-date">${formatDate(review.date)}</div>
+                        </div>
+                    </div>
+                    <div class="review-content">
+                        <p><strong>Destination:</strong> ${review.destination}</p>
+                        <p>${review.review}</p>
+                    </div>
+                `;
+                
+                reviewsContainer.appendChild(reviewCard);
+            });
+        }
+
+        // Format date as "Month Day, Year"
+        function formatDate(dateString) {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString('en-US', options);
+        }
+
+        // Login to review button
+        loginToReviewBtn.addEventListener('click', () => {
+            if (currentUser) {
+                reviewForm.style.display = 'block';
+                loginToReviewBtn.style.display = 'none';
+                document.getElementById('reviewName').value = currentUser.name;
+            } else {
+                loginModal.style.display = 'flex';
+            }
+        });
+
+        // Close login modal
+        loginClose.addEventListener('click', () => {
+            loginModal.style.display = 'none';
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === loginModal) {
+                loginModal.style.display = 'none';
+            }
+        });
+
+        // Login form submission
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            // Check if user exists
+            const user = users.find(u => u.email === email && u.password === password);
+            
+            if (user) {
+                currentUser = user;
+                loginModal.style.display = 'none';
+                reviewForm.style.display = 'block';
+                loginToReviewBtn.style.display = 'none';
+                document.getElementById('reviewName').value = currentUser.name;
+            } else {
+                alert('Invalid email or password');
+            }
+        });
+
+        // Register link
+        registerLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            alert('Registration would be handled here in a real application');
+        });
+
+        // Handle review form submission
+        reviewForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            if (!currentUser) {
+                alert('Please login to submit a review');
+                return;
+            }
+            
+            const formData = new FormData(reviewForm);
+            const rating = formData.get('rating');
+            
+            if (!rating) {
+                alert('Please select a rating');
+                return;
+            }
+            
+            const newReview = {
+                id: reviews.length + 1,
+                name: formData.get('name'),
+                rating: parseInt(rating),
+                destination: formData.get('destination'),
+                review: formData.get('review'),
+                date: new Date().toISOString().split('T')[0] // Current date in YYYY-MM-DD format
+            };
+            
+            // Add to reviews array
+            reviews.push(newReview);
+            
+            // Save to JSON (simulated)
+            saveReviewsToJSON();
+            
+            // Display the updated reviews
+            displayReviews();
+            
+            // Reset the form
+            reviewForm.reset();
+            reviewForm.style.display = 'none';
+            loginToReviewBtn.style.display = 'block';
+            
+            // Show success message
+            alert('Thank you for your review!');
+            
+            // Scroll to the reviews section
+            document.getElementById('reviews').scrollIntoView({ behavior: 'smooth' });
+        });
+        
+        // Load reviews when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            loadReviewsFromJSON();
+            
+            // Auto-scroll reviews (optional)
+            setInterval(() => {
+                if (reviewsContainer.scrollLeft + reviewsContainer.offsetWidth >= reviewsContainer.scrollWidth) {
+                    reviewsContainer.scrollTo({
+                        left: 0,
+                        behavior: 'smooth'
+                    });
+                } else {
+                    reviewsContainer.scrollBy({
+                        left: 300,
+                        behavior: 'smooth'
+                    });
+                }
+            }, 5000);
+        });
+    </script>
+</body>
+</html>
