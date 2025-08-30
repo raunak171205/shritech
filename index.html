@@ -1024,6 +1024,9 @@
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
     <header id="header">
@@ -1429,13 +1432,19 @@
             <div class="review-form-container">
                 <div class="review-form">
                     <h3>Share Your Experience</h3>
-                    <button id="loginToReviewBtn" class="btn" style="width: 100%;">Login to Submit Review</button>
+                    <div id="auth-container">
+                        <button id="googleSignIn" class="btn" style="width: 100%; margin-bottom: 20px;">
+                            <i class="fab fa-google"></i> Sign in with Google to Review
+                        </button>
+                        <button id="signOut" class="btn btn-outline" style="width: 100%; display: none;">
+                            <i class="fas fa-sign-out-alt"></i> Sign Out
+                        </button>
+                    </div>
                     <form id="reviewForm" style="display: none;">
                         <div class="form-group">
                             <label for="reviewName">Your Name:</label>
                             <input type="text" id="reviewName" name="name" required>
                         </div>
-                        
                         <div class="form-group">
                             <label>Your Rating:</label>
                             <div class="rating-stars">
@@ -1451,17 +1460,15 @@
                                 <label for="star1"><i class="fas fa-star"></i></label>
                             </div>
                         </div>
-                        
                         <div class="form-group">
                             <label for="reviewDestination">Destination Visited:</label>
                             <input type="text" id="reviewDestination" name="destination" required>
                         </div>
-                        
+            
                         <div class="form-group">
                             <label for="reviewText">Your Review:</label>
                             <textarea id="reviewText" name="review" required></textarea>
                         </div>
-                        
                         <button type="submit" class="btn">Submit Review</button>
                     </form>
                 </div>
@@ -1598,420 +1605,352 @@
     </div>
 
     <!-- Login Modal -->
-    <div id="loginModal" class="login-modal">
-        <div class="login-content">
-            <span class="login-close">&times;</span>
-            <div class="login-form">
-                <h3>Login to Submit Review</h3>
-                <form id="loginForm">
-                    <div class="form-group">
-                        <label for="loginEmail">Email:</label>
-                        <input type="email" id="loginEmail" name="email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="loginPassword">Password:</label>
-                        <input type="password" id="loginPassword" name="password" required>
-                    </div>
-                    <button type="submit">Login</button>
-                </form>
-                <div class="login-footer">
-                    <p>Don't have an account? <a href="#" id="registerLink">Register</a></p>
-                </div>
-            </div>
-        </div>
-    </div>
+    
 
-    <script>
-        // Mobile menu toggle
-        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-        const navLinks = document.querySelector('.nav-links');
-        
-        mobileMenuBtn.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-            mobileMenuBtn.innerHTML = navLinks.classList.contains('active') ? 
-                '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+   <script>
+    // Mobile menu toggle
+    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+    const navLinks = document.querySelector('.nav-links');
+    
+    mobileMenuBtn.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+        mobileMenuBtn.innerHTML = navLinks.classList.contains('active') ? 
+            '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+    });
+    
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+            navLinks.classList.remove('active');
+            mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
         });
-        
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('active');
-                mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
-            });
-        });
-        
-        // Header scroll effect
-        window.addEventListener('scroll', () => {
-            const header = document.getElementById('header');
-            header.classList.toggle('scrolled', window.scrollY > 50);
-        });
-        
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-
-        // Booking modal functionality
-        const bookingModal = document.getElementById('bookingModal');
-        const closeButton = document.querySelector('.close-button');
-        const bookNowBtns = document.querySelectorAll('.book-now-btn');
-        const bookingForm = document.getElementById('bookingForm');
-        const bookingFormContainer = document.getElementById('bookingFormContainer');
-        const contactOptionsContainer = document.getElementById('contactOptionsContainer');
-        const backToFormBtn = document.getElementById('backToFormBtn');
-        
-        // Form review elements
-        const reviewName = document.getElementById('review-name');
-        const reviewPhone = document.getElementById('review-phone');
-        const reviewService = document.getElementById('review-service');
-        const reviewDestination = document.getElementById('review-destination');
-        const reviewMessage = document.getElementById('review-message');
-        
-        // Contact option buttons
-        const whatsappBtn = document.getElementById('whatsappBtn');
-        const emailBtn = document.getElementById('emailBtn');
-        const smsBtn = document.getElementById('smsBtn');
-        const copyBtn = document.getElementById('copyBtn');
-        
-        // Open the modal when any "Book Now" button is clicked
-        bookNowBtns.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.preventDefault();
-                bookingModal.style.display = 'flex';
-                // Reset form and show form container
-                bookingForm.reset();
-                bookingFormContainer.style.display = 'block';
-                contactOptionsContainer.style.display = 'none';
-            });
-        });
-
-        // Close the modal when the close button is clicked
-        closeButton.addEventListener('click', () => {
-            bookingModal.style.display = 'none';
-        });
-
-        // Close the modal when clicking outside the modal content
-        window.addEventListener('click', (event) => {
-            if (event.target == bookingModal) {
-                bookingModal.style.display = 'none';
-            }
-        });
-
-        // Handle form submission
-        bookingForm.addEventListener('submit', (e) => {
+    });
+    
+    // Header scroll effect
+    window.addEventListener('scroll', () => {
+        const header = document.getElementById('header');
+        header.classList.toggle('scrolled', window.scrollY > 50);
+    });
+    
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
             e.preventDefault();
             
-            // Get form data
-            const formData = new FormData(bookingForm);
-            const data = {};
-            for (let [key, value] of formData.entries()) {
-                data[key] = value;
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+            
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
             }
-            
-            // Update review section
-            reviewName.textContent = data.name;
-            reviewPhone.textContent = data.phone;
-            reviewService.textContent = data.preferred_service_type;
-            reviewDestination.textContent = data.place_to_travel;
-            reviewMessage.textContent = data.message || 'No additional message';
-            
-            // Prepare message for sharing
-            const message = `Booking Inquiry from ShriTech Travel Website:
+        });
+    });
+
+    // Booking modal functionality
+    const bookingModal = document.getElementById('bookingModal');
+    const closeButton = document.querySelector('.close-button');
+    const bookNowBtns = document.querySelectorAll('.book-now-btn');
+    const bookingForm = document.getElementById('bookingForm');
+    const bookingFormContainer = document.getElementById('bookingFormContainer');
+    const contactOptionsContainer = document.getElementById('contactOptionsContainer');
+    const backToFormBtn = document.getElementById('backToFormBtn');
+    
+    // Form review elements
+    const reviewName = document.getElementById('review-name');
+    const reviewPhone = document.getElementById('review-phone');
+    const reviewService = document.getElementById('review-service');
+    const reviewDestination = document.getElementById('review-destination');
+    const reviewMessage = document.getElementById('review-message');
+    
+    // Contact option buttons
+    const whatsappBtn = document.getElementById('whatsappBtn');
+    const emailBtn = document.getElementById('emailBtn');
+    const smsBtn = document.getElementById('smsBtn');
+    const copyBtn = document.getElementById('copyBtn');
+    
+    // Open the modal when any "Book Now" button is clicked
+    bookNowBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            bookingModal.style.display = 'flex';
+            // Reset form and show form container
+            bookingForm.reset();
+            bookingFormContainer.style.display = 'block';
+            contactOptionsContainer.style.display = 'none';
+        });
+    });
+
+    // Close the modal when the close button is clicked
+    closeButton.addEventListener('click', () => {
+        bookingModal.style.display = 'none';
+    });
+
+    // Close the modal when clicking outside the modal content
+    window.addEventListener('click', (event) => {
+        if (event.target == bookingModal) {
+            bookingModal.style.display = 'none';
+        }
+    });
+
+    // Handle form submission
+    bookingForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        // Get form data
+        const formData = new FormData(bookingForm);
+        const data = {};
+        for (let [key, value] of formData.entries()) {
+            data[key] = value;
+        }
+        
+        // Update review section
+        reviewName.textContent = data.name;
+        reviewPhone.textContent = data.phone;
+        reviewService.textContent = data.preferred_service_type;
+        reviewDestination.textContent = data.place_to_travel;
+        reviewMessage.textContent = data.message || 'No additional message';
+        
+        // Prepare message for sharing
+        const message = `Booking Inquiry from ShriTech Travel Website:
 Name: ${data.name}
 Phone: ${data.phone}
 Email: ${data.email}
 Service Type: ${data.preferred_service_type}
 Destination: ${data.place_to_travel}
 Message: ${data.message || 'No additional message'}`;
-            
-            // Set up contact options
-            whatsappBtn.href = `https://wa.me/917039082427?text=${encodeURIComponent(message)}`;
-            emailBtn.href = `mailto:shritechindia87@gmail.com?subject=Travel Inquiry from ${encodeURIComponent(data.name)}&body=${encodeURIComponent(message)}`;
-            smsBtn.href = `sms:7039082427?body=${encodeURIComponent(message)}`;
-            
-            // Set up copy button
-            copyBtn.onclick = () => {
-                navigator.clipboard.writeText(message).then(() => {
-                    alert('Details copied to clipboard! You can now paste them anywhere.');
-                }).catch(err => {
-                    console.error('Failed to copy: ', err);
-                    // Fallback for older browsers
-                    const textarea = document.createElement('textarea');
-                    textarea.value = message;
-                    document.body.appendChild(textarea);
-                    textarea.select();
-                    document.execCommand('copy');
-                    document.body.removeChild(textarea);
-                    alert('Details copied to clipboard!');
-                });
-            };
-            
-            // Show contact options
-            bookingFormContainer.style.display = 'none';
-            contactOptionsContainer.style.display = 'block';
-        });
-
-        // Back to form button
-        backToFormBtn.addEventListener('click', () => {
-            bookingFormContainer.style.display = 'block';
-            contactOptionsContainer.style.display = 'none';
-        });
-
-        // Reviews functionality with JSON storage and login
-        const reviewsContainer = document.getElementById('reviewsContainer');
-        const reviewForm = document.getElementById('reviewForm');
-        const loginToReviewBtn = document.getElementById('loginToReviewBtn');
-        const loginModal = document.getElementById('loginModal');
-        const loginClose = document.querySelector('.login-close');
-        const loginForm = document.getElementById('loginForm');
-        const registerLink = document.getElementById('registerLink');
-
-        // Sample users data (in a real app, this would come from a server)
-        let users = [
-            { email: "user@example.com", password: "password123", name: "Demo User" }
-        ];
-
-        // Current user
-        let currentUser = null;
-
-        // Reviews data (will be loaded from JSON file)
-        let reviews = [];
-
-        // Function to save reviews to JSON file (simulated)
-        function saveReviewsToJSON() {
-            // In a real application, you would send this to a server
-            // For this demo, we'll simulate saving to a JSON file
-            const data = JSON.stringify(reviews);
-            localStorage.setItem('shritechTravelReviews', data);
-            
-            // In a real app, you would use something like:
-            // fetch('save_reviews.php', {
-            //     method: 'POST',
-            //     headers: { 'Content-Type': 'application/json' },
-            //     body: data
-            // });
-            
-            console.log("Reviews saved (simulated JSON file)");
-        }
-
-        // Function to load reviews from JSON file (simulated)
-        function loadReviewsFromJSON() {
-            // In a real application, you would fetch this from a server
-            // For this demo, we'll use localStorage to simulate loading from a file
-            
-            // Check if there are reviews in localStorage
-            const savedReviews = localStorage.getItem('shritechTravelReviews');
-            if (savedReviews) {
-                reviews = JSON.parse(savedReviews);
-            } else {
-                // Default reviews if none exist
-                reviews = [
-                    {
-                        id: 1,
-                        name: "Rahul Sharma",
-                        rating: 5,
-                        destination: "Lonavala & Khandala",
-                        review: "Amazing weekend getaway organized by ShriTech Travel. Everything was perfectly arranged and the guide was very knowledgeable. Will definitely book with them again!",
-                        date: "2025-05-15"
-                    },
-                    {
-                        id: 2,
-                        name: "Priya Patel",
-                        rating: 4,
-                        destination: "Mahabaleshwar",
-                        review: "Great family trip with comfortable transport and good hotels. The itinerary was well-planned with enough free time to explore on our own.",
-                        date: "2025-04-22"
-                    },
-                    {
-                        id: 3,
-                        name: "Vikram Singh",
-                        rating: 5,
-                        destination: "Alibaug",
-                        review: "Excellent service from start to finish. The team was very responsive to all our requests and made sure we had a memorable beach vacation.",
-                        date: "2025-03-10"
-                    }
-                ];
-                saveReviewsToJSON();
-            }
-            
-            displayReviews();
-        }
-
-        // Function to display reviews with horizontal scrolling
-        function displayReviews() {
-            reviewsContainer.innerHTML = '';
-            
-            // Sort reviews by date (newest first)
-            reviews.sort((a, b) => new Date(b.date) - new Date(a.date));
-            
-            reviews.forEach(review => {
-                const reviewCard = document.createElement('div');
-                reviewCard.className = 'review-card';
-                
-                // Create initials for avatar
-                const initials = review.name.split(' ').map(n => n[0]).join('').toUpperCase();
-                
-                // Create stars based on rating
-                let stars = '';
-                for (let i = 1; i <= 5; i++) {
-                    stars += i <= review.rating ? 
-                        '<i class="fas fa-star"></i>' : 
-                        '<i class="far fa-star"></i>';
-                }
-                
-                reviewCard.innerHTML = `
-                    <div class="review-header">
-                        <div class="review-avatar">${initials}</div>
-                        <div class="review-user">
-                            <h4>${review.name}</h4>
-                            <div class="review-rating">${stars}</div>
-                            <div class="review-date">${formatDate(review.date)}</div>
-                        </div>
-                    </div>
-                    <div class="review-content">
-                        <p><strong>Destination:</strong> ${review.destination}</p>
-                        <p>${review.review}</p>
-                    </div>
-                `;
-                
-                reviewsContainer.appendChild(reviewCard);
-            });
-        }
-
-        // Format date as "Month Day, Year"
-        function formatDate(dateString) {
-            const options = { year: 'numeric', month: 'long', day: 'numeric' };
-            return new Date(dateString).toLocaleDateString('en-US', options);
-        }
-
-        // Login to review button
-        loginToReviewBtn.addEventListener('click', () => {
-            if (currentUser) {
-                reviewForm.style.display = 'block';
-                loginToReviewBtn.style.display = 'none';
-                document.getElementById('reviewName').value = currentUser.name;
-            } else {
-                loginModal.style.display = 'flex';
-            }
-        });
-
-        // Close login modal
-        loginClose.addEventListener('click', () => {
-            loginModal.style.display = 'none';
-        });
-
-        // Close modal when clicking outside
-        window.addEventListener('click', (e) => {
-            if (e.target === loginModal) {
-                loginModal.style.display = 'none';
-            }
-        });
-
-        // Login form submission
-        loginForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-            
-            // Check if user exists
-            const user = users.find(u => u.email === email && u.password === password);
-            
-            if (user) {
-                currentUser = user;
-                loginModal.style.display = 'none';
-                reviewForm.style.display = 'block';
-                loginToReviewBtn.style.display = 'none';
-                document.getElementById('reviewName').value = currentUser.name;
-            } else {
-                alert('Invalid email or password');
-            }
-        });
-
-        // Register link
-        registerLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            alert('Registration would be handled here in a real application');
-        });
-
-        // Handle review form submission
-        reviewForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            if (!currentUser) {
-                alert('Please login to submit a review');
-                return;
-            }
-            
-            const formData = new FormData(reviewForm);
-            const rating = formData.get('rating');
-            
-            if (!rating) {
-                alert('Please select a rating');
-                return;
-            }
-            
-            const newReview = {
-                id: reviews.length + 1,
-                name: formData.get('name'),
-                rating: parseInt(rating),
-                destination: formData.get('destination'),
-                review: formData.get('review'),
-                date: new Date().toISOString().split('T')[0] // Current date in YYYY-MM-DD format
-            };
-            
-            // Add to reviews array
-            reviews.push(newReview);
-            
-            // Save to JSON (simulated)
-            saveReviewsToJSON();
-            
-            // Display the updated reviews
-            displayReviews();
-            
-            // Reset the form
-            reviewForm.reset();
-            reviewForm.style.display = 'none';
-            loginToReviewBtn.style.display = 'block';
-            
-            // Show success message
-            alert('Thank you for your review!');
-            
-            // Scroll to the reviews section
-            document.getElementById('reviews').scrollIntoView({ behavior: 'smooth' });
-        });
         
-        // Load reviews when the page loads
-        document.addEventListener('DOMContentLoaded', () => {
-            loadReviewsFromJSON();
-            
-            // Auto-scroll reviews (optional)
-            setInterval(() => {
-                if (reviewsContainer.scrollLeft + reviewsContainer.offsetWidth >= reviewsContainer.scrollWidth) {
-                    reviewsContainer.scrollTo({
-                        left: 0,
-                        behavior: 'smooth'
-                    });
-                } else {
-                    reviewsContainer.scrollBy({
-                        left: 300,
-                        behavior: 'smooth'
-                    });
+        // Set up contact options
+        whatsappBtn.href = `https://wa.me/917039082427?text=${encodeURIComponent(message)}`;
+        emailBtn.href = `mailto:shritechindia87@gmail.com?subject=Travel Inquiry from ${encodeURIComponent(data.name)}&body=${encodeURIComponent(message)}`;
+        smsBtn.href = `sms:7039082427?body=${encodeURIComponent(message)}`;
+        
+        // Set up copy button
+        copyBtn.onclick = () => {
+            navigator.clipboard.writeText(message).then(() => {
+                alert('Details copied to clipboard! You can now paste them anywhere.');
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+                // Fallback for older browsers
+                const textarea = document.createElement('textarea');
+                textarea.value = message;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('Details copied to clipboard!');
+            });
+        };
+        
+        // Show contact options
+        bookingFormContainer.style.display = 'none';
+        contactOptionsContainer.style.display = 'block';
+    });
+
+    // Back to form button
+    backToFormBtn.addEventListener('click', () => {
+        bookingFormContainer.style.display = 'block';
+        contactOptionsContainer.style.display = 'none';
+    });
+
+    // Firebase configuration and initialization
+    const firebaseConfig = {
+        apiKey: "AIzaSyAnUpvSSoc7j74-0dunc3vqQMyPXPC_xC4",
+        authDomain: "shreetech-eca4c.firebaseapp.com",
+        projectId: "shreetech-eca4c",
+        storageBucket: "shreetech-eca4c.firebasestorage.app",
+        messagingSenderId: "888001005930",
+        appId: "1:888001005930:web:2758f7dcfb026167f47d13",
+        measurementId: "G-9KDTRD6KXM"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    // Google Auth Provider
+    const provider = new firebase.auth.GoogleAuthProvider();
+
+    // Firebase Authentication and Reviews functionality
+    const googleSignInBtn = document.getElementById('googleSignIn');
+    const signOutBtn = document.getElementById('signOut');
+    const reviewForm = document.getElementById('reviewForm');
+    const reviewsContainer = document.getElementById('reviewsContainer');
+    const authContainer = document.getElementById('auth-container');
+
+    let currentUser = null;
+
+    // Auth state observer
+    auth.onAuthStateChanged((user) => {
+        if (user) {
+            currentUser = user;
+            googleSignInBtn.style.display = 'none';
+            signOutBtn.style.display = 'block';
+            reviewForm.style.display = 'block';
+            document.getElementById('reviewName').value = user.displayName || '';
+        } else {
+            currentUser = null;
+            googleSignInBtn.style.display = 'block';
+            signOutBtn.style.display = 'none';
+            reviewForm.style.display = 'none';
+        }
+    });
+
+    // Google Sign In
+    googleSignInBtn.addEventListener('click', () => {
+        auth.signInWithPopup(provider)
+            .then((result) => {
+                console.log('Signed in successfully:', result.user);
+            })
+            .catch((error) => {
+                console.error('Sign in error:', error);
+                alert('Error signing in with Google: ' + error.message);
+            });
+    });
+
+    // Sign Out
+    signOutBtn.addEventListener('click', () => {
+        auth.signOut()
+            .then(() => {
+                console.log('Signed out successfully');
+            })
+            .catch((error) => {
+                console.error('Sign out error:', error);
+            });
+    });
+
+    // Load reviews from Firestore
+    function loadReviewsFromFirestore() {
+        reviewsContainer.innerHTML = '<p>Loading reviews...</p>';
+        
+        db.collection('reviews')
+            .orderBy('date', 'desc')
+            .get()
+            .then((querySnapshot) => {
+                reviewsContainer.innerHTML = '';
+                
+                if (querySnapshot.empty) {
+                    reviewsContainer.innerHTML = '<p>No reviews yet. Be the first to review!</p>';
+                    return;
                 }
-            }, 5000);
-        });
-    </script>
+                
+                querySnapshot.forEach((doc) => {
+                    const review = doc.data();
+                    addReviewToDOM(review);
+                });
+            })
+            .catch((error) => {
+                console.error('Error loading reviews:', error);
+                reviewsContainer.innerHTML = '<p>Error loading reviews. Please try again later.</p>';
+            });
+    }
+
+    // Add review to DOM
+    function addReviewToDOM(review) {
+        const reviewCard = document.createElement('div');
+        reviewCard.className = 'review-card';
+        
+        // Create initials for avatar
+        const initials = review.name.split(' ').map(n => n[0]).join('').toUpperCase();
+        
+        // Create stars based on rating
+        let stars = '';
+        for (let i = 1; i <= 5; i++) {
+            stars += i <= review.rating ? 
+                '<i class="fas fa-star"></i>' : 
+                '<i class="far fa-star"></i>';
+        }
+        
+        reviewCard.innerHTML = `
+            <div class="review-header">
+                <div class="review-avatar">${initials}</div>
+                <div class="review-user">
+                    <h4>${review.name}</h4>
+                    <div class="review-rating">${stars}</div>
+                    <div class="review-date">${formatDate(review.date)}</div>
+                </div>
+            </div>
+            <div class="review-content">
+                <p><strong>Destination:</strong> ${review.destination}</p>
+                <p>${review.review}</p>
+            </div>
+        `;
+        
+        reviewsContainer.appendChild(reviewCard);
+    }
+
+    // Format date as "Month Day, Year"
+    function formatDate(dateString) {
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        return new Date(dateString).toLocaleDateString('en-US', options);
+    }
+
+    // Handle review form submission
+    reviewForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        if (!currentUser) {
+            alert('Please sign in to submit a review');
+            return;
+        }
+        
+        const formData = new FormData(reviewForm);
+        const rating = formData.get('rating');
+        
+        if (!rating) {
+            alert('Please select a rating');
+            return;
+        }
+        
+        const newReview = {
+            userId: currentUser.uid,
+            name: formData.get('name'),
+            rating: parseInt(rating),
+            destination: formData.get('destination'),
+            review: formData.get('review'),
+            date: new Date().toISOString()
+        };
+        
+        // Add to Firestore
+        db.collection('reviews').add(newReview)
+            .then(() => {
+                // Add to DOM
+                addReviewToDOM(newReview);
+                
+                // Reset the form
+                reviewForm.reset();
+                
+                // Show success message
+                alert('Thank you for your review!');
+            })
+            .catch((error) => {
+                console.error('Error adding review:', error);
+                alert('There was an error submitting your review. Please try again.');
+            });
+    });
+    
+    // Load reviews when the page loads
+    document.addEventListener('DOMContentLoaded', () => {
+        loadReviewsFromFirestore();
+        
+        // Auto-scroll reviews (optional)
+        setInterval(() => {
+            if (reviewsContainer.scrollLeft + reviewsContainer.offsetWidth >= reviewsContainer.scrollWidth) {
+                reviewsContainer.scrollTo({
+                    left: 0,
+                    behavior: 'smooth'
+                });
+            } else {
+                reviewsContainer.scrollBy({
+                    left: 300,
+                    behavior: 'smooth'
+                });
+            }
+        }, 5000);
+    });
+</script>
 </body>
 </html>
